@@ -1,4 +1,8 @@
 import { danger, fail, markdown, warn } from 'danger'
+import { compact, includes, uniq } from "lodash"
+
+import * as fs from "fs"
+import * as path from "path"
 
 const appFiles = danger.git.fileMatch('**/*.ts').getKeyedPaths()
 const testFiles = danger.git.fileMatch('**/*.test.ts').getKeyedPaths()
@@ -18,6 +22,11 @@ export const DEFAULT_RULES = [
   Rules.PR_DESCRIPTION,
   Rules.PR_TICKET_IN_DESCRIPTION,
 ]
+
+const modified = danger.git.modified_files
+const typescriptOnly = (file: string) => includes(file, ".ts")
+const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
+const touchedFiles = modified.concat(danger.git.created_files).filter(filesOnly)
 
 
 warn(`:exclamation: ${danger.github.pr.additions} files was add and ${danger.github.pr.deletions} file was deleted `)
