@@ -19,6 +19,9 @@ export const DEFAULT_RULES = [
   Rules.PR_TICKET_IN_DESCRIPTION,
 ]
 
+
+warn(`:exclamation: ${danger.github.pr.additions} files was add and ${danger.github.pr.deletions} file was deleted `)
+
 const hasCorrectType = (title: string): boolean =>
   /^\s*(BREAKING|chore|ci|feat|fix|refactor|revert|docs|test|style|perf).*/.test(title)
 
